@@ -32,9 +32,48 @@ fn main() {
     // Note: given what you know about Rust so far, it's easier to pull characters out of a
     // vector than it is to pull them out of a string. You can get the ith character of
     // secret_word by doing secret_word_chars[i].
-    let secret_word_chars: Vec<char> = secret_word.chars().collect();
+    let mut secret_word_chars: Vec<char> = secret_word.chars().collect();
+    let mut a=NUM_INCORRECT_GUESSES;
+    let mut b: Vec<char> = vec![];
+    let mut d: Vec<char> = vec![];
+    let c=secret_word_chars.len();
+    for i in 0..c{
+       b.push('-');
+    };
+    println!("Welcome to CS110L Hangman!");
+    while a>0 {
+     println!("The word so far is {}",b.iter().collect::<String>());
+     println!("You have guessed the following letters:{}",d.iter().collect::<String>());
+     println!("You have {} guesses left",a);
+     print!("Please guess a letter: ");
+// Make sure the prompt from the previous line gets displayed:
+io::stdout()
+    .flush()
+    .expect("Error flushing stdout.");
+let mut gues= String::new();
+io::stdin()
+    .read_line(&mut gues)
+    .expect("Error reading line.");
+
+    let Some(guess) = gues.chars().next() else {
+    println!("Empty input, please try again.");
+    continue; // 关键点：跳过本轮循环
+};
+  
+    for i in 0..c{
+        if guess ==  secret_word_chars[i]{
+                  b[i]=guess;
+                  secret_word_chars[i]='-';
+        }
+    }
+    d.push(guess);
+    if !b.contains(&guess){a=a-1;println!("Sorry, that letter is not in the word");};
+    if a==0 && b.contains(&'-'){println!("Sorry, you ran out of guesses!");
+    if a==0 && !b.contains(&'-'){println!("Congratulations you guessed the secret word: lobster!")};
+    }
+
     // Uncomment for debugging:
     // println!("random word: {}", secret_word);
 
     // Your code here! :)
-}
+};}
